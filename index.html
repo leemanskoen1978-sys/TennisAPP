@@ -855,16 +855,16 @@
         let deleteId = null;
 
         // Initialize storage
-        async function initStorage() {
+        function initStorage() {
             try {
-                const storedLessons = await window.storage.get('tennis-lessons-standalone');
-                if (storedLessons && storedLessons.value) {
-                    lessons = JSON.parse(storedLessons.value);
+                const storedLessons = localStorage.getItem('tennis-lessons');
+                if (storedLessons) {
+                    lessons = JSON.parse(storedLessons);
                 }
 
-                const storedCards = await window.storage.get('tennis-beurtenkaarten');
-                if (storedCards && storedCards.value) {
-                    beurtenkaarten = JSON.parse(storedCards.value);
+                const storedCards = localStorage.getItem('tennis-beurtenkaarten');
+                if (storedCards) {
+                    beurtenkaarten = JSON.parse(storedCards);
                 }
 
                 updateUI();
@@ -879,10 +879,10 @@
             document.getElementById('cardPurchaseDate').value = today;
         }
 
-        async function saveToStorage() {
+        function saveToStorage() {
             try {
-                await window.storage.set('tennis-lessons-standalone', JSON.stringify(lessons));
-                await window.storage.set('tennis-beurtenkaarten', JSON.stringify(beurtenkaarten));
+                localStorage.setItem('tennis-lessons', JSON.stringify(lessons));
+                localStorage.setItem('tennis-beurtenkaarten', JSON.stringify(beurtenkaarten));
             } catch (error) {
                 console.error('Error saving to storage:', error);
             }
@@ -1065,7 +1065,7 @@
                 });
 
                 lessons.sort((a, b) => new Date(a.start) - new Date(b.start));
-                await saveToStorage();
+                saveToStorage();
                 updateUI();
 
                 statusDiv.innerHTML = `
@@ -1677,7 +1677,7 @@
                 });
             }
 
-            await saveToStorage();
+            saveToStorage();
             updateUI();
             closeBulkPaymentModal();
             
@@ -1705,4 +1705,5 @@
     </script>
 </body>
 </html>
+
 
